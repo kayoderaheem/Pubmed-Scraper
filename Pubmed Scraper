@@ -1,0 +1,26 @@
+!pip install biopython
+
+from Bio import Entrez
+
+def scrape_researchgate(query, max_results):
+    # Provide your email address to the Entrez library
+    Entrez.email = 'your_email@example.com'
+
+    # Perform a search query on PubMed
+    handle = Entrez.esearch(db='researchgate', term=query, retmax=max_results)
+    record = Entrez.read(handle)
+    handle.close()
+
+    # Fetch the details of the articles based on the search results
+    id_list = record['IdList']
+    handle = Entrez.efetch(db='researchgate', id=id_list, rettype='medline', retmode='text')
+    results = handle.read()
+    handle.close()
+
+    return results
+
+# Example usage
+search_query = 'immunoinformatics'
+max_results = 10
+_results = scrape_pubmed(search_query, max_results)
+print(pubmed_results)
